@@ -11,7 +11,11 @@ configureSIGPIPE()
 
 // Launch the root ArgumentParser command via Task so the async overload from
 // AsyncParsableCommand is called (not the synchronous ParsableCommand.main()).
-// ArgumentParser calls Foundation.exit() internally when the command finishes,
-// so RunLoop.main.run() keeps the thread alive until that happens.
-Task { await OsxAiInloop.main() }
+// ArgumentParser only calls exit() on error, not on success, so we explicitly
+// call exit(0) after main() returns. RunLoop.main.run() keeps the thread alive
+// until one of those exit() calls fires.
+Task {
+    await OsxAiInloop.main()
+    Darwin.exit(0)
+}
 RunLoop.main.run()
