@@ -9,7 +9,7 @@ import Foundation
 /// Write a string to stdout followed by a newline.
 /// Uses FileHandle.standardOutput for direct byte-level writes.
 public func writeStdout(_ text: String) {
-    var output = text + "\n"
+    let output = text + "\n"
     if let data = output.data(using: .utf8) {
         FileHandle.standardOutput.write(data)
     }
